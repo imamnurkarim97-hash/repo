@@ -4,11 +4,15 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// ====== BACKEND API ======
-const backend = require("./backend/app.js"); 
-app.use("/api", backend);
+// ===== BACKEND API (opsional) =====
+try {
+  const backend = require("./backend/app.js");
+  app.use("/api", backend);
+} catch (err) {
+  console.log("Backend tidak ditemukan, server hanya menjalankan frontend");
+}
 
-// ====== FRONTEND BUILD ======
+// ===== FRONTEND BUILD =====
 app.use(express.static(path.join(__dirname, "frontend", "build")));
 
 app.get("*", (req, res) => {
